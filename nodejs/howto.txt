@@ -1,0 +1,10 @@
+Build the container:
+docker stop node;docker rm node;docker build -t inode .
+
+Run :
+docker run --name node -d --restart=always --net [network] --ip [ip] \
+	-v [worker]:/opt/app \
+	-p 8087 \
+	--link db:mysql \
+	inode
+

@@ -1,0 +1,23 @@
+Build the container:
+docker stop proxy;docker rm proxy;docker build -t ihaproxy .
+
+docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+
+Create local network :(once)
+docker network create --subnet=172.18.0.0/16 krondor
+
+
+docker run --name proxy --link node --link web --link db:mysql --net krondor --ip 172.18.0.101 -p 80:80 ihaproxy
+
+docker stop proxy;docker rm proxy;docker run --name proxy --link node --link web --link db:mysql --net krondor --ip 172.18.0.101 -p 80:80 ihaproxy
+
+docker stop proxy;docker rm proxy;
+
+docker run -d --restart=always --name proxy --link node --link web --link db:mysql --net krondor --ip 172.18.0.101 -p 80:80 ihaproxy
+
+
+socat - TCP:172.18.0.10:8087,crnl
+curl -i -N -H "Connection: Upgrade" -H "Upgrade: websocket" -H "Host: 172.18.0.10:8087" -H "Origin: http://172.18.0.10:8087/" http://172.18.0.10:8087/
+
+
+curl -i -N -H "Connection: Upgrade" -H "Upgrade: websocket" -H "Host: 172.18.0.13:8088" -H "Origin: http://172.18.0.13:8088/" http://172.18.0.13:8088/

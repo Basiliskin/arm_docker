@@ -1,0 +1,19 @@
+Build the container:
+
+docker stop db;docker rm db;
+
+docker pull ejzspb/arm-mariadb
+
+docker exec -i -t db /bin/bash
+
+Run proxy :
+./run.sh
+
+Restore :
+docker stop db;docker rm db;restore.sh
+from SQL(see mysql_restore.sh):
+
+Backup:
+backup.sh
+
+docker network create --subnet=172.18.0.0/16 [network]

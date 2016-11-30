@@ -1,0 +1,16 @@
+Build the container:
+docker stop web;docker rm web;docker build -t iphp .
+
+docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
+
+Run proxy :
+docker stop web;docker rm web;
+
+docker run -d --restart=always --net [network] --ip [ip]  -p 8089 -e ALLOW_OVERRIDE=true  --name web \
+	--link db:mysql  \
+	-v [www]:/opt/app/www:rw iphp
+
+Bash:	
+docker exec -i -t web /bin/bash
+
+
